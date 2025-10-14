@@ -22,39 +22,35 @@ int bookCount = 0; // Текущее количество записей рас�
 
 
 
-// void loadExpenses(const char *filename)
-// {
-//     ifstream fin(filename); // Открываем файл на чтение
+void loadBooks(const char *filename)
+{
+    ifstream fin(filename);
 
-//     if (!fin)
-//         return; // Если файл не найден — выходим из функции
+    if (!fin)
+        return;
 
-//     // Чтение данных построчно, пока есть что читать
-//     while (fin >> expenses[expenseCount].date >> expenses[expenseCount].category >> expenses[expenseCount].amount)
-//     {
-//         expenseCount++; // Увеличиваем счётчик после успешного чтения
-//     }
+    while (fin >> books[bookCount].name >> books[bookCount].author >> books[bookCount].year >> books[bookCount].rating)
+    {
+        bookCount++;
+    }
 
-//     fin.close(); // Закрываем файл
-// }
+    fin.close();
+}
 
-// // --- Функция для сохранения одного расхода в файл ---
-// void saveExpenseToFile(const char *filename, Expense e)
-// {
-//     ofstream fout(filename, ios::app); // Открываем файл в режиме добавления (append)
 
-//     if (!fout)
-//     {
-//         cout << "Ошибка при сохранении файла!" << endl;
-//         return;
-//     }
+void saveBookToFile(const char *filename, Book b)
+{
+    ofstream fout(filename, ios::app);
 
-//     // Записываем дату, категорию и сумму в файл через пробел
-//     fout << e.date << " " << e.category << " " << e.amount << endl;
+    if (!fout)
+    {
+        cout << "Ошибка при сохранении файла!" << endl;
+        return;
+    }
 
-//     fout.close(); // Закрываем файл
-// }
-
+    fout << b.name << " " << b.author << " " << b.year << b.rating << endl;
+    fout.close(); 
+}
 
 
 
@@ -84,7 +80,7 @@ void addBook()
 
     // Добавляем в массив и сохраняем в файл
     books[bookCount++] = b;
-    saveExpenseToFile("expenses.txt", b);
+    saveBookToFile("expenses.txt", b);
 
     cout << "Книга добавлена!\n";
 }
