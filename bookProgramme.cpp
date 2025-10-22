@@ -8,65 +8,45 @@ using namespace std;
 
 const int MAX_BOOKS = 1000;
 
-
-struct Book
-{
+struct Book {
     char name[100];
     char author[50];
-    int year; 
+    int year;
     float rating;
 };
 
-// Глобальный массив для хранения всех расходов
 Book books[MAX_BOOKS];
-int bookCount = 0; // Текущее количество записей расходов
+int bookCount = 0;
 
-
-
-void loadBooks(const char *filename)
-{
+void loadBooks(const char *filename) {
     ifstream fin(filename);
+    if (!fin) return;
 
-    if (!fin)
-        return;
-
-    while (fin >> books[bookCount].name >> books[bookCount].author >> books[bookCount].year >> books[bookCount].rating)
-    {
+    while (fin >> books[bookCount].name >> books[bookCount].author >> books[bookCount].year >> books[bookCount].rating) {
         bookCount++;
     }
 
     fin.close();
 }
 
-
-void saveBookToFile(const char *filename, Book b)
-{
+void saveBookToFile(const char *filename, Book b) {
     ofstream fout(filename, ios::app);
-
-    if (!fout)
-    {
+    if (!fout) {
         cout << "Ошибка при сохранении файла!" << endl;
         return;
     }
 
     fout << b.name << " " << b.author << " " << b.year << " " << b.rating << endl;
-    fout.close(); 
+    fout.close();
 }
 
-
-
-void addBook()
-{
-    // Проверяем, не превышен ли лимит
-    if (bookCount >= MAX_BOOKS)
-    {
-        cout << "Превышен лимит расходов!" << endl;
+void addBook() {
+    if (bookCount >= MAX_BOOKS) {
+        cout << "Превышен лимит книг!" << endl;
         return;
     }
 
-    Book b; // Создаём новую переменную для расхода
-
-    // Считываем данные от пользователя
+    Book b;
     cout << "Введите название книги: ";
     cin >> b.name;
 
@@ -79,22 +59,18 @@ void addBook()
     cout << "Введите оценку: ";
     cin >> b.rating;
 
-    // Добавляем в массив и сохраняем в файл
     books[bookCount++] = b;
     saveBookToFile("books.txt", b);
 
     cout << "Книга добавлена!\n";
 }
 
-
-// --- Функция для отображения всех расходов ---
-void showAllBooks()
-{
-    if (bookCount == 0)
-    {
+void showAllBooks() {
+    if (bookCount == 0) {
         cout << "Нет данных о книгах.\n";
         return;
     }
+
     cout << "\n--- Все книги ---\n";
     cout << left << setw(32) << "Название"
          << setw(30) << "Автор"
@@ -102,8 +78,7 @@ void showAllBooks()
          << "Оценка\n";
     cout << "-----------------------------------------------------------------------------------------------\n";
 
-    for (int i = 0; i < bookCount; i++)
-    {
+    for (int i = 0; i < bookCount; i++) {
         cout << left << setw(25) << books[i].name
              << setw(25) << books[i].author
              << setw(25) << books[i].year
@@ -111,39 +86,31 @@ void showAllBooks()
     }
 }
 
-// --- Функция для вывода статистики ---
-void showStats()
-{
-    if (bookCount == 0)
-    {
+void showStats() {
+    if (bookCount == 0) {
         cout << "Нет данных для анализа.\n";
         return;
     }
 
-    float total = 0;                // Общая сумма оценок
-    float max = books[0].rating; // Самая большая оценка (начинаем с первой)
+    float total = 0;
+    float max = books[0].rating;
     const char *nameBook = books[0].name;
-    // Считаем сумму и находим максимум
-    for (int i = 0; i < bookCount; i++)
-    {
-        total += books[i].rating;
 
-        if (books[i].rating > max)
-        {
+    for (int i = 0; i < bookCount; i++) {
+        total += books[i].rating;
+        if (books[i].rating > max) {
             max = books[i].rating;
             nameBook = books[i].name;
         }
     }
 
-    float average = total / bookCount; // Среднее значение
+    float average = total / bookCount;
 
-    // Выводим статистику
     cout << "\n--- Статистика ---\n";
     cout << "Количество прочитанных книг: " << bookCount << " книг(и)\n";
     cout << "Средняя оценка: " << average << "\n";
     cout << "Самая высоко оценённая книга: " << nameBook << "\n";
 }
-
 
 void showmenu() {
     cout << "\n=== Трекер книг ===\n";
@@ -155,7 +122,6 @@ void showmenu() {
 }
 
 int main() {
-
     SetConsoleOutputCP(65001);
     SetConsoleCP(65001);
 
@@ -165,8 +131,8 @@ int main() {
     do {
         showmenu();
         cin >> choice;
-        
-        switch(choice) {
+
+        switch (choice) {
             case 1:
                 addBook();
                 break;
