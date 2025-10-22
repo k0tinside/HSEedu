@@ -2,6 +2,7 @@
 #include <fstream>
 #include <cstring>
 #include <iomanip>
+#include <windows.h>
 
 using namespace std;
 
@@ -48,7 +49,7 @@ void saveBookToFile(const char *filename, Book b)
         return;
     }
 
-    fout << b.name << " " << b.author << " " << b.year << b.rating << endl;
+    fout << b.name << " " << b.author << " " << b.year << " " << b.rating << endl;
     fout.close(); 
 }
 
@@ -80,13 +81,68 @@ void addBook()
 
     // Добавляем в массив и сохраняем в файл
     books[bookCount++] = b;
-    saveBookToFile("expenses.txt", b);
+    saveBookToFile("books.txt", b);
 
     cout << "Книга добавлена!\n";
 }
 
 
+// --- Функция для отображения всех расходов ---
+void showAllBooks()
+{
+    if (bookCount == 0)
+    {
+        cout << "Нет данных о книгах.\n";
+        return;
+    }
+    cout << "\n--- Все книги ---\n";
+    cout << left << setw(32) << "Название"
+         << setw(30) << "Автор"
+         << setw(27) << "Год"
+         << "Оценка\n";
+    cout << "-----------------------------------------------------------------------------------------------\n";
 
+    for (int i = 0; i < bookCount; i++)
+    {
+        cout << left << setw(25) << books[i].name
+             << setw(25) << books[i].author
+             << setw(25) << books[i].year
+             << books[i].rating << "\n";
+    }
+}
+
+// --- Функция для вывода статистики ---
+void showStats()
+{
+    if (bookCount == 0)
+    {
+        cout << "Нет данных для анализа.\n";
+        return;
+    }
+
+    float total = 0;                // Общая сумма оценок
+    float max = books[0].rating; // Самая большая оценка (начинаем с первой)
+    const char *nameBook = books[0].name;
+    // Считаем сумму и находим максимум
+    for (int i = 0; i < bookCount; i++)
+    {
+        total += books[i].rating;
+
+        if (books[i].rating > max)
+        {
+            max = books[i].rating;
+            nameBook = books[i].name;
+        }
+    }
+
+    float average = total / bookCount; // Среднее значение
+
+    // Выводим статистику
+    cout << "\n--- Статистика ---\n";
+    cout << "Количество прочитанных книг: " << bookCount << " книг(и)\n";
+    cout << "Средняя оценка: " << average << "\n";
+    cout << "Самая высоко оценённая книга: " << nameBook << "\n";
+}
 
 
 void showmenu() {
@@ -100,6 +156,10 @@ void showmenu() {
 
 int main() {
 
+    SetConsoleOutputCP(65001);
+    SetConsoleCP(65001);
+
+    loadBooks("books.txt");
     int choice;
 
     do {
@@ -108,13 +168,21 @@ int main() {
         
         switch(choice) {
             case 1:
+                addBook();
+                break;
             case 2:
+                showAllBooks();
+                break;
             case 3:
+                showStats();
+                break;
             case 4:
+                cout << "Выход из программы.\n";
+                break;
             default:
                 cout << "Неверный выбор.\n";
         }
-    }
+    } while (choice != 4);
 
     return 0;
 }
