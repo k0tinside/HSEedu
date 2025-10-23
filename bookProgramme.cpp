@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <cstring>
 #include <iomanip>
 #include <windows.h>
 
