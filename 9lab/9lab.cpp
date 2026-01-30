@@ -58,14 +58,28 @@ auto groupStats(E* arr, int n, KF keyFunc, VF valueFunc) -> std::vector<GroupInf
     return result;
 }
 
+// доп задание: написать функцию вместо лямбды-функции
+int keyFuncForInt(int x) {
+    return x % 10;
+}
+
+// написала также функтор - структура, в котором перегружен оператор вызова функции
+// про него было написано в задании лабораторной
+struct ValueFuncForInt {
+    int operator()(int x) const {
+        return x;
+    }
+};
+
 int main() {
     SetConsoleOutputCP(65001);
     SetConsoleCP(65001);
     // Массив int
+    ValueFuncForInt valFuncForInt;
     int arr1[] = {11, 22, 33, 44, 55, 51, 52};
     std::vector<GroupInfo<int, int, int>> res1 = groupStats(arr1, 7, 
-        [](int x) { return x % 10; }, 
-        [](int x) { return x; }
+        keyFuncForInt, 
+        valFuncForInt
     );
     for (int i = 0; i < (int)res1.size(); ++i) {
         GroupInfo<int, int, int> g = res1[i];
