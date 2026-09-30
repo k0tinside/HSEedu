@@ -31,7 +31,7 @@ public:
         connect(this, &ToolButton::toggled, this, &ToolButton::reactToToggle);
         menus = new Menus(this);
         setMenu(menus);
-        setPopupMode(QToolButton::InstantPopup);
+        // setPopupMode(QToolButton::InstantPopup);
     }
 
     void reactToToggle(bool checked) {
@@ -40,6 +40,7 @@ public:
         } else {
             setIcon(iconDefault);
         }
+        showMenu();
     }
 
 private:
