@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="star-default.svg">icons/non-starred.svg</file>
+        <file alias="star-checked.svg">icons/starred.svg</file>
+        <file alias="face-angel.svg">icons/face-angel.svg</file>
+        <file alias="face-devilish.svg">icons/face-devilish.svg</file>
+    </qresource>
+</RCC>
